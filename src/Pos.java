@@ -13,10 +13,10 @@ public class Pos extends JFrame {
 
         // 헤더 패널 - 굿모닝 버거 POS
         JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        headerPanel.setBackground(Color.DARK_GRAY); // 어두운 색상 설정
+        headerPanel.setBackground(Color.DARK_GRAY);
         headerPanel.setPreferredSize(new Dimension(getWidth(), 50)); // 높이 50 설정
         JLabel headerLabel = new JLabel("굿모닝버거 POS");
-        headerLabel.setFont(new Font("Serif", Font.BOLD, 24)); // 글씨 크기 24로 설정
+        headerLabel.setFont(new Font("Serif", Font.BOLD, 24)); // 글씨 크기
         headerLabel.setForeground(Color.WHITE); // 글씨 색상을 흰색으로 설정
         headerLabel.setHorizontalAlignment(SwingConstants.CENTER);
         headerPanel.add(headerLabel);
@@ -24,12 +24,12 @@ public class Pos extends JFrame {
         // 왼쪽 패널 - 주문표 및 계산
         JPanel leftPanel = new JPanel(new BorderLayout());
         leftPanel.setBackground(Color.LIGHT_GRAY);
-        leftPanel.setPreferredSize(new Dimension(500, getHeight())); // 너비 500 설정
+        leftPanel.setPreferredSize(new Dimension(500, getHeight()));
 
         // 상단 패널 - 주문표
         JPanel upperLeftPanel = new JPanel(new BorderLayout());
         upperLeftPanel.setBackground(Color.LIGHT_GRAY);
-        upperLeftPanel.setPreferredSize(new Dimension(500, 200)); // 높이 300 설정
+        upperLeftPanel.setPreferredSize(new Dimension(500, 200));
 
         // 주문표 데이터
         String[] columnNames = {"*", "메뉴명", "단가", "수량", "금액", "비고"};
@@ -62,7 +62,7 @@ public class Pos extends JFrame {
 
         // JTable 생성
         JTable table = new JTable(model);
-        table.setRowHeight(30); // 행 높이를 30으로 설정
+        table.setRowHeight(30); // 행 높이
         table.setShowVerticalLines(false); // 세로줄 숨기기
 
         // 셀 텍스트 중앙 정렬

@@ -13,7 +13,7 @@ public class Pos extends JFrame {
 
         // 헤더 패널 - 굿모닝 버거 POS
         JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        headerPanel.setBackground(Color.DARK_GRAY);
+        headerPanel.setBackground(Color.DARK_GRAY); // 어두운 색상 설정
         headerPanel.setPreferredSize(new Dimension(getWidth(), 50)); // 높이 50 설정
         JLabel headerLabel = new JLabel("굿모닝버거 POS");
         headerLabel.setFont(new Font("Serif", Font.BOLD, 24)); // 글씨 크기 24로 설정
@@ -29,9 +29,9 @@ public class Pos extends JFrame {
         // 상단 패널 - 주문표
         JPanel upperLeftPanel = new JPanel(new BorderLayout());
         upperLeftPanel.setBackground(Color.LIGHT_GRAY);
-        upperLeftPanel.setPreferredSize(new Dimension(500, 300)); // 높이 400 설정
+        upperLeftPanel.setPreferredSize(new Dimension(500, 200)); // 높이 300 설정
 
-        // 주문표 데이터 임시로 넣은거임
+        // 주문표 데이터
         String[] columnNames = {"*", "메뉴명", "단가", "수량", "금액", "비고"};
         Object[][] data = {
                 {"햄버거", 5000, 1, 5000, ""},
@@ -60,12 +60,12 @@ public class Pos extends JFrame {
             model.addRow(row);
         }
 
-        // 주문표 테이블 생성하기
+        // JTable 생성
         JTable table = new JTable(model);
         table.setRowHeight(30); // 행 높이를 30으로 설정
         table.setShowVerticalLines(false); // 세로줄 숨기기
 
-        // 주문표 셀 텍스트 중앙 정렬
+        // 셀 텍스트 중앙 정렬
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         for (int i = 0; i < table.getColumnCount(); i++) {
@@ -75,16 +75,31 @@ public class Pos extends JFrame {
         JScrollPane scrollPane = new JScrollPane(table);
         upperLeftPanel.add(scrollPane, BorderLayout.CENTER);
 
+        // 버튼 패널 - 각종 버튼들
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 4, 5, 5));
+        JButton cancelAllButton = new JButton("전체 취소");
+        JButton cancelSelectedButton = new JButton("선택 취소");
+        JButton increaseButton = new JButton("+");
+        JButton decreaseButton = new JButton("-");
+        buttonPanel.add(cancelAllButton);
+        buttonPanel.add(cancelSelectedButton);
+        buttonPanel.add(increaseButton);
+        buttonPanel.add(decreaseButton);
+
+        // 주문표에 버튼 패널 추가
+        upperLeftPanel.add(buttonPanel, BorderLayout.SOUTH);
+
         // 하단 패널 - 계산
-        JPanel lowerLeftPanel = new JPanel();
+        JPanel lowerLeftPanel = new JPanel(new BorderLayout());
         lowerLeftPanel.setBackground(Color.LIGHT_GRAY);
-        lowerLeftPanel.add(new JLabel("계산"));
+        lowerLeftPanel.add(new JLabel("계산"), BorderLayout.NORTH);
+        lowerLeftPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         // 왼쪽 패널에 상단 및 하단 패널 추가
         leftPanel.add(upperLeftPanel, BorderLayout.NORTH);
         leftPanel.add(lowerLeftPanel, BorderLayout.CENTER);
 
-        // 오른쪽 패널 - 메뉴판 
+        // 오른쪽 패널 - 메뉴판
         JPanel rightPanel = new JPanel();
         rightPanel.setBackground(Color.LIGHT_GRAY);
         rightPanel.add(new JLabel("메뉴판"));

@@ -11,7 +11,7 @@ public class Pos extends JFrame {
 
         // 헤더 패널 - 굿모닝 버거 POS 
         JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        headerPanel.setBackground(Color.LIGHT_GRAY);
+        headerPanel.setBackground(Color.WHITE);
         headerPanel.setPreferredSize(new Dimension(getWidth(), 50)); // 높이 50 설정
         JLabel headerLabel = new JLabel("굿모닝버거 POS");
         headerLabel.setFont(new Font("Serif", Font.BOLD, 24)); // 글씨 크기 24로 설정
@@ -19,14 +19,28 @@ public class Pos extends JFrame {
         headerPanel.add(headerLabel);
 
         // 왼쪽 패널 - 주문표 및 계산
-        JPanel leftPanel = new JPanel();
-        leftPanel.setBackground(Color.CYAN);
+        JPanel leftPanel = new JPanel(new BorderLayout());
+        leftPanel.setBackground(Color.LIGHT_GRAY);
         leftPanel.setPreferredSize(new Dimension(500, getHeight())); // 너비 500 설정
-        leftPanel.add(new JLabel("주문표 및 계산"));
+
+        // 상단 패널 - 주문표
+        JPanel upperLeftPanel = new JPanel();
+        upperLeftPanel.setBackground(Color.LIGHT_GRAY);
+        upperLeftPanel.setPreferredSize(new Dimension(500, 400)); // 높이 400 설정
+        upperLeftPanel.add(new JLabel("주문표"));
+
+        // 하단 패널 - 계산
+        JPanel lowerLeftPanel = new JPanel();
+        lowerLeftPanel.setBackground(Color.LIGHT_GRAY);
+        lowerLeftPanel.add(new JLabel("계산"));
+
+        // 왼쪽 패널에 상단 및 하단 패널 추가
+        leftPanel.add(upperLeftPanel, BorderLayout.NORTH);
+        leftPanel.add(lowerLeftPanel, BorderLayout.CENTER);
 
         // 오른쪽 패널 - 메뉴판 
         JPanel rightPanel = new JPanel();
-        rightPanel.setBackground(Color.GREEN);
+        rightPanel.setBackground(Color.LIGHT_GRAY);
         rightPanel.add(new JLabel("메뉴판"));
 
         // 패널들을 프레임에 추가

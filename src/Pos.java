@@ -86,20 +86,23 @@ public class Pos extends JFrame {
         buttonPanel.add(increaseButton);
         buttonPanel.add(decreaseButton);
 
-        // 주문표에 버튼 패널 추가
-        upperLeftPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-        /*// 하단 패널 - 계산
+        // 하단 패널 - 계산 (성채은 여기부터 작성해!!##!@#!@#)
         JPanel lowerLeftPanel = new JPanel(new BorderLayout());
         lowerLeftPanel.setBackground(Color.LIGHT_GRAY);
         lowerLeftPanel.add(new JLabel("계산"), BorderLayout.NORTH);
-        lowerLeftPanel.add(buttonPanel, BorderLayout.SOUTH);*/
+        lowerLeftPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         // 왼쪽 패널에 상단 및 하단 패널 추가
         leftPanel.add(upperLeftPanel, BorderLayout.NORTH);
-        //leftPanel.add(lowerLeftPanel, BorderLayout.CENTER);
 
-        // 오른쪽 패널 - 메뉴판
+        // 주문표에 버튼 패널 추가
+        upperLeftPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        // 왼쪽 패널에 하단 패널 추가
+        leftPanel.add(lowerLeftPanel, BorderLayout.CENTER);
+
+        // 오른쪽 패널 - 메뉴판 (이채린, 고주완 여기부터 작성해!!!)
         JPanel rightPanel = new JPanel();
         rightPanel.setBackground(Color.LIGHT_GRAY);
         rightPanel.add(new JLabel("메뉴판"));

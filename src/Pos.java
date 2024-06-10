@@ -2,6 +2,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.border.EmptyBorder;
 
 public class Pos extends JFrame {
     public Pos() {
@@ -124,10 +127,229 @@ public class Pos extends JFrame {
         });
 
         // 하단 패널 - 계산
-        JPanel lowerLeftPanel = new JPanel(new BorderLayout());
-        lowerLeftPanel.setBackground(Color.LIGHT_GRAY);
-        lowerLeftPanel.add(new JLabel("계산"), BorderLayout.NORTH);
-        lowerLeftPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        // 하단 왼쪽 패널 - 계산 결과값
+        JPanel aPanel = new JPanel(new GridLayout(5,2));
+        aPanel.setPreferredSize(new Dimension(240, 200));
+        aPanel.setBorder(new EmptyBorder(5, 10, 5, 15)); // 상단, 좌측, 하단, 우측 여백 설정
+
+        JLabel totalLabel = new JLabel("총금액");
+        totalLabel.setFont(new Font("Serif", Font.PLAIN, 25));
+        aPanel.add(totalLabel);
+        JLabel totalMoney = new JLabel("13000");
+        totalMoney.setHorizontalAlignment(SwingConstants.RIGHT);
+        totalMoney.setFont(new Font("Serif", Font.PLAIN, 30));
+        aPanel.add(totalMoney);
+
+        JLabel saleLabel = new JLabel("할인금액");
+        saleLabel.setFont(new Font("Serif", Font.PLAIN, 25));
+        aPanel.add(saleLabel);
+        JLabel saleMoney = new JLabel("0");
+        saleMoney.setHorizontalAlignment(SwingConstants.RIGHT);
+        saleMoney.setFont(new Font("Serif", Font.PLAIN, 30));
+        aPanel.add(saleMoney);
+
+        JLabel receiveLabel = new JLabel("받을금액");
+        receiveLabel.setFont(new Font("Serif", Font.PLAIN, 25));
+        aPanel.add(receiveLabel);
+        JLabel receiveMoney = new JLabel(totalMoney.getText());
+        receiveMoney.setHorizontalAlignment(SwingConstants.RIGHT);
+        receiveMoney.setFont(new Font("Serif", Font.PLAIN, 30));
+        aPanel.add(receiveMoney);
+
+        JLabel receiveLabel2 = new JLabel("받은금액");
+        receiveLabel2.setFont(new Font("Serif", Font.PLAIN, 25));
+        aPanel.add(receiveLabel2);
+        JLabel receiveMoney2 = new JLabel("0");
+        receiveMoney2.setHorizontalAlignment(SwingConstants.RIGHT);
+        receiveMoney2.setFont(new Font("Serif", Font.PLAIN, 30));
+        aPanel.add(receiveMoney2);
+
+        JLabel changeLabel = new JLabel("거스름돈");
+        changeLabel.setFont(new Font("Serif", Font.PLAIN, 25));
+        aPanel.add(changeLabel);
+        JLabel changeMoney = new JLabel("0");
+        changeMoney.setHorizontalAlignment(SwingConstants.RIGHT);
+        changeMoney.setFont(new Font("Serif", Font.PLAIN, 30));
+        aPanel.add(changeMoney);
+
+
+        // 하단 오른쪽 패널
+        JPanel bPanel = new JPanel();
+        bPanel.setPreferredSize(new Dimension(260, 550));
+
+
+        // 하단 오른쪽-위 패널 계산기 버튼
+        JPanel cPanel = new JPanel(new GridBagLayout());
+        cPanel.setPreferredSize(new Dimension(260, 400));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 3; // result 버튼이 3열을 차지하도록 함
+        gbc.insets = new Insets(5, 5, 5, 5); // 여백 조절
+
+        JButton calResult=new JButton("0");
+        calResult.setPreferredSize(new Dimension(230, 50)); // 버튼 크기 설정
+        calResult.setHorizontalAlignment(SwingConstants.RIGHT); // 텍스트 우측 정렬 설정
+        cPanel.add(calResult,gbc);
+
+
+        // 계산기 숫자 버튼
+        String[] texts = {"7", "8", "9", "4", "5", "6", "1", "2", "3", "0","00","C","<","할인","취소"};
+
+        for (int i = 0; i < texts.length; i++) {
+            String text = texts[i];
+            JButton button = new JButton(texts[i]);
+
+            gbc = new GridBagConstraints(); // 새로운 GridBagConstraints 생성
+            gbc.gridx = i % 3; // 3개의 열에 순환 배치
+            gbc.gridy = i / 3 + 1; // result 버튼 다음 행에 배치
+            gbc.insets = new Insets(5, 5, 5, 5); // 여백 조절
+
+            button.setPreferredSize(new Dimension(70, 50)); // 버튼 크기 설정
+
+            cPanel.add(button, gbc);
+
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int currentValue = Integer.parseInt(calResult.getText());
+
+                    int newValue;
+                    int saleMode;
+
+                    if(totalMoney.getText().equals("0")){
+                        currentValue=0;
+                    }
+
+
+                    String currentText = calResult.getText();
+                    int textLength = currentText.length();
+
+                    if (text.equals("C")) {
+                        // Clear 버튼 누를 때, 결과 초기화
+                        calResult.setText("0");
+                    }
+                    else if(text.equals("<")&&textLength > 0){
+                        String newText = currentText.substring(0, textLength - 1);
+                        // 만약 모든 숫자를 지우면 "0"으로 설정
+                        if (newText.isEmpty()) {
+                            calResult.setText("0");
+                        } else {
+                            calResult.setText(newText);
+                        }
+                    }
+                    else if(text.equals("할인")&&!calResult.getText().equals("0")&&
+                            Integer.parseInt(calResult.getText())<Integer.parseInt(totalMoney.getText())){
+                        int totalSale=currentValue+Integer.parseInt(saleMoney.getText());
+                        saleMoney.setText(Integer.toString(totalSale));
+                        calResult.setText("0");
+                        int tMoney=13000-Integer.parseInt(saleMoney.getText());
+                        totalMoney.setText(Integer.toString(tMoney));
+                        receiveMoney.setText(totalMoney.getText());
+                    }
+                    else if(text.equals("취소")){
+                        saleMoney.setText("0");
+                        totalMoney.setText("13000");
+                        receiveMoney.setText(totalMoney.getText());
+                        receiveMoney2.setText("0");
+                        changeMoney.setText("0");
+                    }
+                    else {
+                        try {
+                            if (text.equals("00")) {
+                                newValue = currentValue * 100;
+                            } else {
+                                newValue = currentValue * 10 + Integer.parseInt(text);
+                            }
+                            calResult.setText(Integer.toString(newValue));
+                            currentValue=newValue;
+
+                        } catch (NumberFormatException ex) {
+                            // 숫자로 변환할 수 없는 경우 무시
+
+                        }
+                    }
+
+
+                }
+            });
+        }
+
+
+
+        // 하단 오른쪽-아래 패널 - 현금/카드 결제
+        JPanel dPanel = new JPanel(new GridBagLayout());
+        dPanel.setPreferredSize(new Dimension(260, 100));
+
+        GridBagConstraints dgbc = new GridBagConstraints();
+
+        // 기본 설정
+        dgbc.fill = GridBagConstraints.NONE;
+        dgbc.insets = new Insets(0, 0, 0, 0); // 기본 패딩 설정
+
+        JButton cash = new JButton("현금");
+        dgbc.gridx = 0;
+        dgbc.gridy = 0;
+        dgbc.insets = new Insets(0, 5, 5, 5);
+        dPanel.add(cash, dgbc);
+        cash.setPreferredSize(new Dimension(110, 85)); // 버튼 크기 설정
+
+        JButton card = new JButton("카드");
+        dgbc.gridx = 1;
+        dgbc.gridy = 0;
+        dgbc.insets = new Insets(0, 5, 5, 5);
+        dPanel.add(card, dgbc);
+        card.setPreferredSize(new Dimension(110, 85)); // 버튼 크기 설정
+
+        // 현금 버튼에 액션 리스너 추가
+        cash.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!calResult.getText().equals("0")){
+                    int cashMoneyValue=Integer.parseInt(calResult.getText())+Integer.parseInt(receiveMoney2.getText());
+                    int cashMoney= Integer.parseInt(receiveMoney.getText())-Integer.parseInt(calResult.getText());
+
+                    if(Integer.parseInt(calResult.getText())<Integer.parseInt(receiveMoney.getText())){
+                        receiveMoney.setText(Integer.toString(cashMoney));
+                        receiveMoney2.setText(Integer.toString(cashMoneyValue));
+                        calResult.setText("0");
+                    }
+                    else{
+                        int changeMoneyValue=Integer.parseInt(calResult.getText())-Integer.parseInt(receiveMoney.getText());
+                        receiveMoney2.setText(Integer.toString(cashMoneyValue));
+                        changeMoney.setText(Integer.toString(changeMoneyValue));
+                        calResult.setText("0");
+                    }
+                }
+                else{
+                    receiveMoney2.setText(totalMoney.getText());
+                }
+            }
+        });
+
+        // 카드 버튼에 액션 리스너 추가
+        card.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!calResult.getText().equals("0")){
+                    if(Integer.parseInt(calResult.getText())<Integer.parseInt(receiveMoney.getText())){
+                        int cardMoneyValue=Integer.parseInt(calResult.getText())+Integer.parseInt(receiveMoney2.getText());
+                        int cardMoney= Integer.parseInt(receiveMoney.getText())-Integer.parseInt(calResult.getText());
+
+                        receiveMoney.setText(Integer.toString(cardMoney));
+                        receiveMoney2.setText(Integer.toString(cardMoneyValue));
+                        calResult.setText("0");
+                    }
+                }
+                else{
+                    receiveMoney2.setText(totalMoney.getText());
+                }
+            }
+        });
+
 
         // 왼쪽 패널에 상단 및 하단 패널 추가
         leftPanel.add(upperLeftPanel, BorderLayout.NORTH);
@@ -135,8 +357,17 @@ public class Pos extends JFrame {
         // 주문표에 버튼 패널 추가
         upperLeftPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-        // 왼쪽 패널에 하단 패널 추가
-        leftPanel.add(lowerLeftPanel, BorderLayout.CENTER);
+        // 왼쪽 패널에 하단-왼쪽 패널 추가 (결과값)
+        leftPanel.add(aPanel, BorderLayout.WEST);
+
+        // 왼쪽 패널 하단-오른쪽 패널 추가 (빈공간)
+        leftPanel.add(bPanel, BorderLayout.EAST);
+
+        // 왼쪽 패널에 하단-오른쪽-위 패널 추가 (계산기 버튼)
+        bPanel.add(cPanel, BorderLayout.NORTH);
+
+        // 왼쪽 패널에 하단-오른쪽-아래 패널 추가 (현금/카드결제)
+        bPanel.add(dPanel,BorderLayout.SOUTH);
 
         // 오른쪽 패널 - 메뉴판
         JPanel rightPanel = new JPanel(new BorderLayout());

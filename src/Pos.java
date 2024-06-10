@@ -132,15 +132,19 @@ public class Pos extends JFrame {
         JPanel aPanel = new JPanel(new GridLayout(5,2));
         aPanel.setPreferredSize(new Dimension(240, 200));
         aPanel.setBorder(new EmptyBorder(5, 10, 5, 15)); // 상단, 좌측, 하단, 우측 여백 설정
-
+        
+        
+        // 총금액
         JLabel totalLabel = new JLabel("총금액");
         totalLabel.setFont(new Font("Serif", Font.PLAIN, 25));
         aPanel.add(totalLabel);
-        JLabel totalMoney = new JLabel("13000");
+        JLabel totalMoney = new JLabel("0");
         totalMoney.setHorizontalAlignment(SwingConstants.RIGHT);
         totalMoney.setFont(new Font("Serif", Font.PLAIN, 30));
         aPanel.add(totalMoney);
 
+        
+        // 할인금액
         JLabel saleLabel = new JLabel("할인금액");
         saleLabel.setFont(new Font("Serif", Font.PLAIN, 25));
         aPanel.add(saleLabel);
@@ -149,6 +153,8 @@ public class Pos extends JFrame {
         saleMoney.setFont(new Font("Serif", Font.PLAIN, 30));
         aPanel.add(saleMoney);
 
+        
+        // 받을금액
         JLabel receiveLabel = new JLabel("받을금액");
         receiveLabel.setFont(new Font("Serif", Font.PLAIN, 25));
         aPanel.add(receiveLabel);
@@ -157,6 +163,8 @@ public class Pos extends JFrame {
         receiveMoney.setFont(new Font("Serif", Font.PLAIN, 30));
         aPanel.add(receiveMoney);
 
+        
+        // 받은금액
         JLabel receiveLabel2 = new JLabel("받은금액");
         receiveLabel2.setFont(new Font("Serif", Font.PLAIN, 25));
         aPanel.add(receiveLabel2);
@@ -165,6 +173,8 @@ public class Pos extends JFrame {
         receiveMoney2.setFont(new Font("Serif", Font.PLAIN, 30));
         aPanel.add(receiveMoney2);
 
+        
+        // 거스름돈
         JLabel changeLabel = new JLabel("거스름돈");
         changeLabel.setFont(new Font("Serif", Font.PLAIN, 25));
         aPanel.add(changeLabel);

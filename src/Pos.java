@@ -201,11 +201,11 @@ public class Pos extends JFrame {
 
         aPanel.add(totalLabel);
 
-        JLabel totalMoney = new JLabel("0");
+        // totalMoney 필드 사용
         totalMoney.setHorizontalAlignment(SwingConstants.RIGHT);
         totalMoney.setFont(new Font("Serif", Font.PLAIN, 30));
-
-        aPanel.add(totalMoney);
+        
+        aPanel.add(this.totalMoney);
 
         
         // 할인금액
@@ -308,6 +308,7 @@ public class Pos extends JFrame {
         };
 
 
+        // 계산기 배치
         for (int i = 0; i < texts.length; i++) {
 
             String text = texts[i];
@@ -393,6 +394,9 @@ public class Pos extends JFrame {
 
                     else if(text.equals("취소")){
 
+                        // 주문표 전체 삭제
+                        model.setRowCount(0);
+
                         saleMoney.setText("0");
                         totalMoney.setText("0");
                         receiveMoney.setText(totalMoney.getText());
@@ -449,6 +453,7 @@ public class Pos extends JFrame {
         dgbc.insets = new Insets(0, 0, 0, 0); // 기본 패딩 설정
 
 
+        // 현금 버튼
         JButton cash = new JButton("현금");
         dgbc.gridx = 0;
         dgbc.gridy = 0;
@@ -457,12 +462,14 @@ public class Pos extends JFrame {
         cash.setPreferredSize(new Dimension(110, 85)); // 버튼 크기 설정
 
 
+        // 카드 버튼
         JButton card = new JButton("카드");
         dgbc.gridx = 1;
         dgbc.gridy = 0;
         dgbc.insets = new Insets(0, 5, 5, 5);
         dPanel.add(card, dgbc);
         card.setPreferredSize(new Dimension(110, 85)); // 버튼 크기 설정
+
 
 
         // 현금 버튼에 액션 리스너 추가
@@ -566,7 +573,7 @@ public class Pos extends JFrame {
 
 
 
-        // 버튼 패널 생성
+        // 메뉴판 버튼 패널 생성
         JPanel buttonPanelRight = new JPanel(new GridLayout(4, 3, 0, 0));
 
         JButton button1 = new JButton("<html><center>앵그리 뉴욕 버거<br>7500원</center></html>");
@@ -602,11 +609,14 @@ public class Pos extends JFrame {
 
 
         // 커피 옵션 선택 다이얼로그
+
+        // 핫. 아이스 선택
         String[] coffeeOptions = {
                 "Hot",
                 "Iced"
         };
 
+        // 달기 조절
         String[] sweetnessOptions = {
                 "설탕 x",
                 "덜 달게",
@@ -614,6 +624,7 @@ public class Pos extends JFrame {
                 "더 달게"
         };
 
+        // 샷 조절 
         String[] shotOptions = {
                 "1 샷",
                 "2 샷",
@@ -733,8 +744,9 @@ public class Pos extends JFrame {
 
             String orderDetails = coffeeName + " (" + temp + ", " + sweetness + ", " + shots + ")";
             Object[] rowData = {orderDetails, price, 1, price, ""};
+
             model.addRow(rowData);
-            updateTotalMoney(model, totalMoney); // 상품이 추가될 때 총금액 업데이트
+            updateTotalMoney(model, totalMoney);    //  총금액 업데이트
             dialog.dispose();
 
         });
@@ -753,14 +765,18 @@ public class Pos extends JFrame {
 
     }
 
+    // 총금액 메소드
     private void updateTotalMoney(DefaultTableModel model, JLabel totalMoney) {
         int total = 0;
         for (int i = 0; i < model.getRowCount(); i++) {
             total += (int) model.getValueAt(i, 4); // 금액 열의 값을 더함
         }
+        
         totalMoney.setText(String.valueOf(total));
+        
     }
 
+    
     public static void main(String[] args) {
 
         SwingUtilities.invokeLater(Pos::new);

@@ -8,6 +8,8 @@ import javax.swing.border.EmptyBorder;
 
 public class Pos extends JFrame {
 
+    private JLabel totalMoney;
+
     public Pos() {
 
         setTitle("굿모닝버거 포스기");
@@ -36,6 +38,7 @@ public class Pos extends JFrame {
 
         // 상단 패널 - 주문표
         JPanel upperLeftPanel = new JPanel(new BorderLayout());
+        totalMoney = new JLabel("0"); // 라벨을 초기화합니다.
         upperLeftPanel.setBackground(Color.LIGHT_GRAY);
         upperLeftPanel.setPreferredSize(new Dimension(500, 200));
 
@@ -64,17 +67,17 @@ public class Pos extends JFrame {
 
             @Override
             public void addRow(Object[] rowData) {
-
                 Object[] rowWithIndex = new Object[rowData.length + 1];
                 rowWithIndex[0] = getRowCount() + 1; // 첫 번째 열에 순번 설정
                 System.arraycopy(rowData, 0, rowWithIndex, 1, rowData.length);
                 super.addRow(rowWithIndex);
-
+                updateTotalMoney(this, totalMoney); // 행이 추가될 때 총금액 업데이트
             }
 
             @Override
             public void removeRow(int row) {
                 super.removeRow(row);
+                updateTotalMoney(this, totalMoney); // 행이 제거될 때 총금액 업데이트
             }
         };
 
@@ -130,8 +133,8 @@ public class Pos extends JFrame {
             int[] selectedRows = table.getSelectedRows();
 
             if (selectedRows.length > 0) {
-
                 for (int i = selectedRows.length - 1; i >= 0; i--) {
+
                     model.removeRow(selectedRows[i]);
 
                 }
@@ -152,7 +155,7 @@ public class Pos extends JFrame {
 
                 model.setValueAt(quantity, selectedRow, 3);
                 model.setValueAt(quantity * price, selectedRow, 4);
-
+                updateTotalMoney(model, totalMoney); // 수량이 변경될 때 총금액 업데이트
             }
         });
 
@@ -176,12 +179,10 @@ public class Pos extends JFrame {
                 }
 
                 else {
-
                     model.setValueAt(quantity, selectedRow, 3);
                     model.setValueAt(quantity * price, selectedRow, 4);
-
                 }
-
+                updateTotalMoney(model, totalMoney); // 수량이 변경될 때 총금액 업데이트
             }
         });
 
@@ -200,7 +201,7 @@ public class Pos extends JFrame {
 
         aPanel.add(totalLabel);
 
-        JLabel totalMoney = new JLabel("13000");
+        JLabel totalMoney = new JLabel("0");
         totalMoney.setHorizontalAlignment(SwingConstants.RIGHT);
         totalMoney.setFont(new Font("Serif", Font.PLAIN, 30));
 
@@ -376,9 +377,16 @@ public class Pos extends JFrame {
                         saleMoney.setText(Integer.toString(totalSale));
                         calResult.setText("0");
 
-                        int tMoney=13000-Integer.parseInt(saleMoney.getText());
+                        // totalMoney의 현재 값을 가져와서 정수로 변환하여 사용
+                        int currentTotal = Integer.parseInt(totalMoney.getText());
+                        int tMoney = currentTotal - Integer.parseInt(saleMoney.getText());
+
+                        // totalMoney 라벨의 텍스트를 변경
                         totalMoney.setText(Integer.toString(tMoney));
+
+                        // receiveMoney 라벨에도 동일한 값 설정
                         receiveMoney.setText(totalMoney.getText());
+
 
                     }
 
@@ -386,7 +394,7 @@ public class Pos extends JFrame {
                     else if(text.equals("취소")){
 
                         saleMoney.setText("0");
-                        totalMoney.setText("13000");
+                        totalMoney.setText("0");
                         receiveMoney.setText(totalMoney.getText());
                         receiveMoney2.setText("0");
                         changeMoney.setText("0");
@@ -620,6 +628,7 @@ public class Pos extends JFrame {
 
             Object[] rowData = {"앵그리 뉴욕 버거", 7500, 1, 7500, ""};
             model.addRow(rowData);
+            updateTotalMoney(model, totalMoney); // 상품이 추가될 때 총금액 업데이트
 
         });
 
@@ -627,6 +636,7 @@ public class Pos extends JFrame {
 
             Object[] rowData = {"치즈버거", 4500, 1, 4500, ""};
             model.addRow(rowData);
+            updateTotalMoney(model, totalMoney); // 상품이 추가될 때 총금액 업데이트
 
         });
 
@@ -634,6 +644,7 @@ public class Pos extends JFrame {
 
             Object[] rowData = {"미니언 옐로 머핀", 3200, 1, 3200, ""};
             model.addRow(rowData);
+            updateTotalMoney(model, totalMoney); // 상품이 추가될 때 총금액 업데이트
 
         });
 
@@ -641,6 +652,7 @@ public class Pos extends JFrame {
 
             Object[] rowData = {"해적왕 루피 머핀", 4300, 1, 4300, ""};
             model.addRow(rowData);
+            updateTotalMoney(model, totalMoney); // 상품이 추가될 때 총금액 업데이트
 
         });
 
@@ -655,6 +667,7 @@ public class Pos extends JFrame {
 
             Object[] rowData = {"오렌지주스", 1500, 1, 1500, ""};
             model.addRow(rowData);
+            updateTotalMoney(model, totalMoney); // 상품이 추가될 때 총금액 업데이트
 
         });
 
@@ -662,6 +675,7 @@ public class Pos extends JFrame {
 
             Object[] rowData = {"생수", 1000, 1, 1000, ""};
             model.addRow(rowData);
+            updateTotalMoney(model, totalMoney); // 상품이 추가될 때 총금액 업데이트
 
         });
 
@@ -720,6 +734,7 @@ public class Pos extends JFrame {
             String orderDetails = coffeeName + " (" + temp + ", " + sweetness + ", " + shots + ")";
             Object[] rowData = {orderDetails, price, 1, price, ""};
             model.addRow(rowData);
+            updateTotalMoney(model, totalMoney); // 상품이 추가될 때 총금액 업데이트
             dialog.dispose();
 
         });
@@ -736,6 +751,14 @@ public class Pos extends JFrame {
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
 
+    }
+
+    private void updateTotalMoney(DefaultTableModel model, JLabel totalMoney) {
+        int total = 0;
+        for (int i = 0; i < model.getRowCount(); i++) {
+            total += (int) model.getValueAt(i, 4); // 금액 열의 값을 더함
+        }
+        totalMoney.setText(String.valueOf(total));
     }
 
     public static void main(String[] args) {

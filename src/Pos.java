@@ -8,9 +8,6 @@ import javax.swing.border.EmptyBorder;
 
 public class Pos extends JFrame {
 
-    //private JLabel totalMoney; // 총금액 라벨을 인스턴스 변수로 이동
-
-
     public Pos() {
 
         setTitle("굿모닝버거 포스기");
@@ -72,16 +69,12 @@ public class Pos extends JFrame {
                 rowWithIndex[0] = getRowCount() + 1; // 첫 번째 열에 순번 설정
                 System.arraycopy(rowData, 0, rowWithIndex, 1, rowData.length);
                 super.addRow(rowWithIndex);
-                //updateTotalMoney(); // 행이 추가될 때 총금액 업데이트
 
             }
 
             @Override
             public void removeRow(int row) {
-
                 super.removeRow(row);
-                //updateTotalMoney(); // 행이 제거될 때 총금액 업데이트
-
             }
         };
 
@@ -159,7 +152,6 @@ public class Pos extends JFrame {
 
                 model.setValueAt(quantity, selectedRow, 3);
                 model.setValueAt(quantity * price, selectedRow, 4);
-                //updateTotalMoney();
 
             }
         });
@@ -189,8 +181,6 @@ public class Pos extends JFrame {
                     model.setValueAt(quantity * price, selectedRow, 4);
 
                 }
-
-                //updateTotalMoney();
 
             }
         });

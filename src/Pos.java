@@ -372,7 +372,6 @@ public class Pos extends JFrame {
         // 오른쪽 패널 - 메뉴판
         JPanel rightPanel = new JPanel(new BorderLayout());
         rightPanel.setBackground(Color.LIGHT_GRAY);
-        rightPanel.add(new JLabel("메뉴판"), BorderLayout.NORTH);
 
         // 버튼 패널 생성
         JPanel buttonPanelRight = new JPanel(new GridLayout(4, 3, 0, 0));
